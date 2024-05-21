@@ -26,12 +26,12 @@ func (g *Group) Do(key string, fn func() (interface{}, error)) (interface{}, err
 */
 
 func (g *Group) Do(key string, fn func() (interface{}, error)) (interface{}, error) {
-	g.mu.Lock()
-	defer g.mu.Unlock()
 	value, ok := g.m[key]
 	if !ok {
+		g.mu.Lock()
 		newVal, err := fn()
 		g.m[key] = &call{wg: sync.WaitGroup{}, val: newVal, err: err}
+		g.mu.Unlock()
 		g.m[key].wg.Add(1)
 		defer g.m[key].wg.Done()
 		return newVal, err
