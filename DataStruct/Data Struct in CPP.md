@@ -567,7 +567,7 @@ Status DeQueue(SqQueue &Q,QElemType &e){
 
 #### b.链式队列
 
-初始化：
+定义链式队列：
 
 ```cpp
 #define MAXSIZE 100
@@ -580,6 +580,17 @@ typedef struct{
     QueuePtr front;
     QueuePtr rear;
 }LinkQueue;
+```
+
+初始化：
+
+```cpp
+Status InitQueue(LinkQueue &Q){
+    Q.front=Q.rear=new QueuePtr;
+    if(!Q.front)exit(OVERFLOW);
+    Q.front->next=NULL;
+    return OK;
+}
 ```
 
 销毁链式队列：
